@@ -1,6 +1,19 @@
-# Bazel
+# Build artifacts
 bazel-bin/
-bazel-out/
+bazel-genfiles/
 bazel-satisfactory-server/
+bazel-out/
 bazel-testlogs/
+
+# Build artifacts as files
+bazel-bin
+bazel-genfiles
+bazel-satisfactory-server
+bazel-out
+bazel-testlogs
+
+# Bazel lockfile
 MODULE.bazel.lock
+
+# VS Code
+.vscode/
