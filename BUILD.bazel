@@ -1,13 +1,20 @@
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
 #
 # Satisfactory Layer
 #
 
+pkg_files(
+    name = "satisfactory_files",
+    srcs = ["@satisfactory//:files"],
+    strip_prefix = "pkg",
+    attributes = pkg_attributes(mode = "0755"),  # this applies to all files and is an awful idea
+)
 pkg_tar(
     name = "satisfactory_layer",
-    srcs = ["@satisfactory//:files"],
+    srcs = [":satisfactory_files"],
     package_dir = "/opt/game",
 )
 
@@ -15,24 +22,13 @@ pkg_tar(
 # Final Image
 #
 
-pkg_tar(
-    name = "entrypoint_layer",
-    srcs = [":entrypoint.sh"],
-    package_dir = "/",
-    symlinks = {
-        "/root/.steam/sdk32/steamclient.so": "/opt/game/bin/steamclient.so",
-    },
-)
 
 oci_image(
     name = "image",
     base = "@debian",
-    entrypoint = ["/entrypoint.sh"],
-    env = {
-    },
+    entrypoint = ["/opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping", "FactoryGame"],
     tars = [
         ":satisfactory_layer",
-        ":entrypoint_layer",
     ],
 )
 
