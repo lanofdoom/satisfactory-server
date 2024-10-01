@@ -1,4 +1,4 @@
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push", "oci_tarball")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 
 #
@@ -36,7 +36,7 @@ oci_image(
     ],
 )
 
-oci_tarball(
+oci_load(
     name = "image_tarball",
     image = ":image",
     repo_tags = ["satisfactory-server:bazel"],

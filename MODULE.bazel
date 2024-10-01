@@ -1,7 +1,7 @@
 module(name = "satisfactory_server")
 
-bazel_dep(name = "rules_pkg", version = "0.9.1")
-bazel_dep(name = "rules_oci", version = "1.4.3")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+bazel_dep(name = "rules_oci", version = "2.0.0")
 bazel_dep(name = "rules_steam")
 
 git_override(
