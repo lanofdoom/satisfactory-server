@@ -6,7 +6,7 @@ bazel_dep(name = "rules_steam")
 
 git_override(
     module_name = "rules_steam",
-    commit = "a177cd8197fa887fe4bd33cfe0a54a8adc3e36a0",
+    commit = "09b00185b9e6757f1d74f32598fb63af36d96b06",
     remote = "https://github.com/lanofdoom/rules_steam.git",
 )
 
@@ -22,4 +22,4 @@ oci.pull(
     image = "docker.io/library/debian",
     platforms = ["linux/amd64"],
 )
-use_repo(oci, "debian")
+use_repo(oci, "debian_linux_amd64")

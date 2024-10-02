@@ -22,10 +22,9 @@ pkg_tar(
 # Final Image
 #
 
-
 oci_image(
     name = "image",
-    base = "@debian",
+    base = "@debian_linux_amd64",
     entrypoint = ["/opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping", "FactoryGame"],
     tars = [
         ":satisfactory_layer",
