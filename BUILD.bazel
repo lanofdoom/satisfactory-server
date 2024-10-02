@@ -9,9 +9,10 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 pkg_files(
     name = "satisfactory_files",
     srcs = ["@satisfactory//:files"],
-    strip_prefix = "pkg",
     attributes = pkg_attributes(mode = "0755"),  # this applies to all files and is an awful idea
+    strip_prefix = "pkg",
 )
+
 pkg_tar(
     name = "satisfactory_layer",
     srcs = [":satisfactory_files"],
@@ -25,7 +26,10 @@ pkg_tar(
 oci_image(
     name = "image",
     base = "@debian_linux_amd64",
-    entrypoint = ["/opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping", "FactoryGame"],
+    entrypoint = [
+        "/opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping",
+        "FactoryGame",
+    ],
     tars = [
         ":satisfactory_layer",
     ],

@@ -12,8 +12,5 @@ bazel-satisfactory-server
 bazel-out
 bazel-testlogs
 
-# Bazel lockfile
-MODULE.bazel.lock
-
 # VS Code
 .vscode/
