@@ -14,3 +14,6 @@ bazel-testlogs
 
 # VS Code
 .vscode/
+
+# Game data
+/data
