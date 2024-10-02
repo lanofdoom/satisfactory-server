@@ -2,8 +2,8 @@ module(name = "satisfactory_server")
 
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_oci", version = "2.0.0")
+bazel_dep(name = "rules_distroless", version = "0.3.8")
 bazel_dep(name = "rules_steam")
-
 git_override(
     module_name = "rules_steam",
     commit = "09b00185b9e6757f1d74f32598fb63af36d96b06",
@@ -11,15 +11,17 @@ git_override(
 )
 
 steam = use_extension("@rules_steam//:steam.bzl", "steam")
-steam.app(name = "satisfactory", app = "1690800")
+steam.app(
+    name = "satisfactory",
+    app = "1690800",
+)
 use_repo(steam, "satisfactory")
 
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
-
 oci.pull(
     name = "debian",
-    tag = "bookworm-slim",
     image = "docker.io/library/debian",
     platforms = ["linux/amd64"],
+    tag = "bookworm-slim",
 )
-use_repo(oci, "debian_linux_amd64")
+use_repo(oci, "debian", "debian_linux_amd64")

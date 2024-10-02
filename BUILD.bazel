@@ -1,3 +1,4 @@
+load("@rules_distroless//distroless:defs.bzl", "home", "passwd")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
@@ -20,6 +21,36 @@ pkg_tar(
 )
 
 #
+# User Layer
+#
+
+# Create a passwd file and home directory with a nonroot user and uid.
+passwd(
+    name = "passwd",
+    entries = [
+        {
+            "gecos": ["nonroot"],
+            "gid": 999,
+            "home": "/home",
+            "shell": "/bin/bash",
+            "uid": 999,
+            "username": "nonroot",
+        },
+    ],
+)
+
+home(
+    name = "home",
+    dirs = [
+        {
+            "home": "/home",
+            "uid": 999,
+            "gid": 999,
+        },
+    ],
+)
+
+#
 # Final Image
 #
 
@@ -32,7 +63,10 @@ oci_image(
     ],
     tars = [
         ":satisfactory_layer",
+        ":passwd",
+        ":home",
     ],
+    user = "999:999",
 )
 
 oci_load(
