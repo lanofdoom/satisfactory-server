@@ -1,72 +1,37 @@
-load("@rules_distroless//distroless:defs.bzl", "home", "passwd")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
 #
 # Satisfactory Layer
 #
 
-pkg_files(
-    name = "satisfactory_files",
-    srcs = ["@satisfactory//:files"],
-    attributes = pkg_attributes(mode = "0755"),  # this applies to all files and is an awful idea
-    strip_prefix = "pkg",
-)
-
 pkg_tar(
     name = "satisfactory_layer",
-    srcs = [":satisfactory_files"],
+    srcs = ["@satisfactory//:files"],
     package_dir = "/opt/game",
-)
-
-#
-# User Layer
-#
-
-# Create a passwd file and home directory with a nonroot user and uid.
-passwd(
-    name = "passwd",
-    entries = [
-        {
-            "gecos": ["nonroot"],
-            "gid": 999,
-            "home": "/home",
-            "shell": "/bin/bash",
-            "uid": 999,
-            "username": "nonroot",
-        },
-    ],
-)
-
-home(
-    name = "home",
-    dirs = [
-        {
-            "home": "/home",
-            "uid": 999,
-            "gid": 999,
-        },
-    ],
 )
 
 #
 # Final Image
 #
 
+pkg_tar(
+    name = "entrypoint_layer",
+    srcs = [":entrypoint.sh"],
+    package_dir = "/",
+    symlinks = {
+        "/root/.steam/sdk32/steamclient.so": "/opt/game/bin/steamclient.so",
+    },
+)
+
 oci_image(
     name = "image",
     base = "@debian_linux_amd64",
-    entrypoint = [
-        "/opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping",
-        "FactoryGame",
-    ],
+    entrypoint = ["/entrypoint.sh"],
     tars = [
         ":satisfactory_layer",
-        ":passwd",
-        ":home",
+        ":entrypoint_layer",
     ],
-    user = "999:999",
 )
 
 oci_load(
