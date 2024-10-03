@@ -28,6 +28,10 @@ oci_image(
     name = "image",
     base = "@debian_linux_amd64",
     entrypoint = ["/entrypoint.sh"],
+    env = {
+        "PUID": "1000",
+        "PGID": "1000",
+    },
     tars = [
         ":satisfactory_layer",
         ":entrypoint_layer",
