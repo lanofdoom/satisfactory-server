@@ -23,8 +23,8 @@ install -d -m 0777 -o nobody -g nogroup /opt/game/FactoryGame/Intermediate
 # Create directories in game directory and link into /data
 install -d -m 0777 -o nobody -g nogroup /opt/game/FactoryGame/Saved
 install -d -m 0777 -o nobody -g nogroup /opt/game/Engine/Saved
-ln -s /data/FactoryGame/Saved /opt/game/FactoryGame/Saved
-ln -s /data/Engine/Saved /opt/game/Engine/Saved
+ln -f -s /data/FactoryGame/Saved /opt/game/FactoryGame/Saved
+ln -f -s /data/Engine/Saved /opt/game/Engine/Saved
 
 # Start server as nobody
 sudo -u nobody HOME=/data/home /opt/game/FactoryServer.sh
