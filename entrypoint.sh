@@ -11,18 +11,23 @@ groupmod -g $PGID nogroup
 chmod +x /opt/game/Engine/Binaries/Linux/FactoryServer-Linux-Shipping
 chmod +x /opt/game/FactoryServer.sh
 
-# Create save directory and mark as writable for all users
+# Create save directory
 mkdir -p /data/FactoryGame/Saved
 mkdir -p /data/Engine/Saved
 mkdir -p /data/home
 chown -R nobody:nogroup /data
 
 # Create other writable directories needed by server
-install -d -m 0777 -o nobody -g nogroup /opt/game/FactoryGame/Intermediate
+mkdir -p /opt/game/FactoryGame/Intermediate
+chown -R nobody:nogroup /opt/game/FactoryGame/Intermediate
 
-# Create directories in game directory and link into /data
-install -d -m 0777 -o nobody -g nogroup /opt/game/FactoryGame/Saved
-install -d -m 0777 -o nobody -g nogroup /opt/game/Engine/Saved
+# Create directories in state directory
+mkdir -p /opt/game/FactoryGame/Saved
+chown -R nobody:nogroup /opt/game/FactoryGame/Saved
+mkdir -p /opt/game/Engine/Saved
+chown -R nobody:nogroup /opt/game/Engine/Saved
+
+# Link state directories into /data
 ln -f -s /data/FactoryGame/Saved /opt/game/FactoryGame/Saved
 ln -f -s /data/Engine/Saved /opt/game/Engine/Saved
 
