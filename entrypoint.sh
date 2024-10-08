@@ -22,14 +22,10 @@ mkdir -p /opt/game/FactoryGame/Intermediate
 chown -R nobody:nogroup /opt/game/FactoryGame/Intermediate
 
 # Create directories in state directory
-mkdir -p /opt/game/FactoryGame/Saved
-chown -R nobody:nogroup /opt/game/FactoryGame/Saved
-mkdir -p /opt/game/Engine/Saved
-chown -R nobody:nogroup /opt/game/Engine/Saved
-
-# Link state directories into /data
 ln -f -s /data/FactoryGame/Saved /opt/game/FactoryGame/Saved
+chown -R nobody:nogroup /opt/game/FactoryGame/Saved
 ln -f -s /data/Engine/Saved /opt/game/Engine/Saved
+chown -R nobody:nogroup /opt/game/Engine/Saved
 
 # Start server as nobody
 sudo -u nobody HOME=/data/home /opt/game/FactoryServer.sh
